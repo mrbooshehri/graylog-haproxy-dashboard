@@ -1,0 +1,1345 @@
+{
+  "v": 1,
+  "id": "cd026e6a-7e90-41d3-9fef-631e1ba2465e",
+  "rev": 1,
+  "name": "HAProxy Dashboard",
+  "summary": "Custom HAProxy Dashboard",
+  "description": "This content pack is designed to enhance HAProxy monitoring within Graylog, providing comprehensive insights into backend performance and security. It includes:\n\n- Backend Status: Real-time monitoring of each backend's status (UP/DOWN).\n- Most Used Backend: Identification of the backend with the highest request rate.\n- DDoS Attack Detection: Alerts for potential DDoS attacks by analyzing backend call rates in the last 10 seconds.\n- Backend Heatmap: Visual representation of backend performance over time, highlighting usage patterns and potential bottlenecks.\n\nDeploy this content pack to gain actionable intelligence from your HAProxy logs, ensuring high availability and security of your services.\n",
+  "vendor": "Mohammadreza Booshehri",
+  "url": "https://github.com/mrbooshehri/graylog-haproxy-dashboard",
+  "parameters": [],
+  "entities": [
+    {
+      "v": "1",
+      "type": {
+        "name": "stream",
+        "version": "1"
+      },
+      "id": "1d89c563-b46c-4c9f-ba1e-d61e587f4852",
+      "data": {
+        "alarm_callbacks": [],
+        "outputs": [],
+        "remove_matches": {
+          "@type": "boolean",
+          "@value": true
+        },
+        "title": {
+          "@type": "string",
+          "@value": "HAProxy"
+        },
+        "stream_rules": [
+          {
+            "type": {
+              "@type": "string",
+              "@value": "EXACT"
+            },
+            "field": {
+              "@type": "string",
+              "@value": "application_name"
+            },
+            "value": {
+              "@type": "string",
+              "@value": "haproxy"
+            },
+            "inverted": {
+              "@type": "boolean",
+              "@value": false
+            },
+            "description": {
+              "@type": "string",
+              "@value": ""
+            }
+          }
+        ],
+        "alert_conditions": [],
+        "matching_type": {
+          "@type": "string",
+          "@value": "AND"
+        },
+        "disabled": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "description": {
+          "@type": "string",
+          "@value": "Stream containing all events created by HAProxy"
+        },
+        "default_stream": {
+          "@type": "boolean",
+          "@value": false
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.2.7+5e29a2c"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "dashboard",
+        "version": "2"
+      },
+      "id": "cf7d3466-6dda-4c2a-936d-baf93dafb663",
+      "data": {
+        "summary": {
+          "@type": "string",
+          "@value": "HAProxy Dashboard"
+        },
+        "search": {
+          "queries": [
+            {
+              "id": "0dc9f8fd-9035-4867-94e3-f76654228bed",
+              "timerange": {
+                "from": 300,
+                "type": "relative"
+              },
+              "filters": [],
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": null,
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "offset": 0,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "filter": null,
+                  "decorators": [],
+                  "type": "messages",
+                  "id": "f38a3be4-9c41-41aa-a41a-4fc4465bac8f",
+                  "limit": 150,
+                  "filters": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count()",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "time",
+                      "fields": [
+                        "timestamp"
+                      ],
+                      "interval": {
+                        "type": "auto",
+                        "scaling": 1
+                      }
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "a3c08044-c3ea-48ba-80ed-c8bcfd86da7a",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                }
+              ]
+            },
+            {
+              "id": "388b4916-7514-4b68-bb07-e51da6012171",
+              "timerange": {
+                "from": 300,
+                "type": "relative"
+              },
+              "filters": [],
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Req/Backend",
+                      "field": "haproxy_backend"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": true
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "b499fc35-4b55-4ea4-ac8b-f030a548e479",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                }
+              ]
+            },
+            {
+              "id": "dd89d230-8749-4a19-99d7-f6a041fde006",
+              "timerange": {
+                "from": 300,
+                "type": "relative"
+              },
+              "filters": [],
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "haproxy_statusCode:[200 TO 299] AND NOT haproxy_statusCode:\\-1"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "2xx",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "ab8216df-7a2a-4ec9-a103-60fd250657c2",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "NOT haproxy_statusCode:\\-1"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Status  Code",
+                      "field": "haproxy_statusCode"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": true
+                    },
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_backend"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": false
+                    },
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_serverName"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": false
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "999e0d81-7d45-4946-9b7e-f2e0832791cb",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "haproxy_statusCode",
+                      "direction": "Ascending"
+                    }
+                  ]
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "haproxy_statusCode:[400 TO 499] AND NOT haproxy_statusCode:\\-1"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "4xx",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "db0791d9-966d-4175-af53-d9cc2547b038",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Message Count",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": true
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "425a28fc-160e-4752-adfe-0245a5ebb0fe",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "haproxy_statusCode:[300 TO 399] AND NOT haproxy_statusCode:\\-1"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "3xx",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "31a9190b-b1cd-401f-98f2-dea36a159276",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "haproxy_statusCode:[500 TO 599] AND NOT haproxy_statusCode:\\-1"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 604800,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "5xx",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "c8bfac4e-eade-434c-930c-84fb35ced580",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                }
+              ]
+            },
+            {
+              "id": "fc2fa50c-be21-4c6f-8dc2-637f30e5954e",
+              "timerange": {
+                "from": 300,
+                "type": "relative"
+              },
+              "filters": [],
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 60,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Req/Backend",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": false,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": true
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "03aa9f87-af37-4483-91d5-000678d8e91d",
+                  "filters": [],
+                  "column_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "limit": 100,
+                      "skip_empty_values": false
+                    }
+                  ],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 60,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [
+                    "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                  ],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Req/Backend",
+                      "field": "haproxy_backend"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "limit": 5,
+                      "skip_empty_values": true
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "f9b2287e-9d43-4cf0-8d5e-b0650fbdf6d6",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": [
+                    {
+                      "type": "series",
+                      "field": "count(haproxy_backend)",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": [],
+          "requires": {},
+          "owner": "admin",
+          "created_at": "2024-05-10T06:19:17.666Z"
+        },
+        "created_at": "2024-05-10T04:28:21.404Z",
+        "requires": {},
+        "state": {
+          "0dc9f8fd-9035-4867-94e3-f76654228bed": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "widget": {
+                "c1795c13-1f89-40b7-b48b-8d564ea025fc": "Mesage Count",
+                "9fa3fe49-1ca6-4a0e-926f-07f352d08d13": "Message Table"
+              },
+              "tab": {
+                "title": "Status"
+              }
+            },
+            "widgets": [
+              {
+                "id": "9fa3fe49-1ca6-4a0e-926f-07f352d08d13",
+                "type": "messages",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "fields": [
+                    "timestamp",
+                    "source"
+                  ],
+                  "show_message_row": true,
+                  "show_summary": true,
+                  "decorators": [],
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "timestamp",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "c1795c13-1f89-40b7-b48b-8d564ea025fc",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "bar",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": null,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "timestamp"
+                      ],
+                      "type": "time",
+                      "config": {
+                        "interval": {
+                          "type": "auto",
+                          "scaling": 1
+                        }
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": ""
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "barmode": "group",
+                    "axis_type": "linear"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              }
+            ],
+            "widget_mapping": {
+              "9fa3fe49-1ca6-4a0e-926f-07f352d08d13": [
+                "f38a3be4-9c41-41aa-a41a-4fc4465bac8f"
+              ],
+              "c1795c13-1f89-40b7-b48b-8d564ea025fc": [
+                "a3c08044-c3ea-48ba-80ed-c8bcfd86da7a"
+              ]
+            },
+            "positions": {
+              "9fa3fe49-1ca6-4a0e-926f-07f352d08d13": {
+                "col": 1,
+                "row": 3,
+                "height": 4,
+                "width": "Infinity"
+              },
+              "c1795c13-1f89-40b7-b48b-8d564ea025fc": {
+                "col": 1,
+                "row": 1,
+                "height": 2,
+                "width": "Infinity"
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          },
+          "388b4916-7514-4b68-bb07-e51da6012171": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "widget": {
+                "5033beb9-ce55-4f97-a662-849916cff908": "Backend Info"
+              },
+              "tab": {
+                "title": "Backend(s) Info"
+              }
+            },
+            "widgets": [
+              {
+                "id": "5033beb9-ce55-4f97-a662-849916cff908",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "table",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 100,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100,
+                        "skip_empty_values": true
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "Req/Backend"
+                      },
+                      "function": "count(haproxy_backend)"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "pinned_columns": []
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              }
+            ],
+            "widget_mapping": {
+              "5033beb9-ce55-4f97-a662-849916cff908": [
+                "b499fc35-4b55-4ea4-ac8b-f030a548e479"
+              ]
+            },
+            "positions": {
+              "5033beb9-ce55-4f97-a662-849916cff908": {
+                "col": 1,
+                "row": 1,
+                "height": 4,
+                "width": "Infinity"
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          },
+          "dd89d230-8749-4a19-99d7-f6a041fde006": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "tab": {
+                "title": "Status Codes"
+              },
+              "widget": {
+                "19f02796-3cc9-4842-9bb4-9cdb1abbc013": "Status code Per Backend",
+                "9ae66650-f3c1-410b-a093-6e55c678f543": "3xx",
+                "a6a96d37-355c-4b35-ab27-6bbd041cfdc4": "2xx",
+                "06a0c9e0-f817-4645-9b71-0aab05a93161": "4xx",
+                "fc2c23a7-1c63-435c-939d-70feb7c32e2c": "5xx",
+                "9235aa5c-bafc-484b-9431-f688b6b1cc18": "All Status Codes"
+              }
+            },
+            "widgets": [
+              {
+                "id": "fc2c23a7-1c63-435c-939d-70feb7c32e2c",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "haproxy_statusCode:[500 TO 599] AND NOT haproxy_statusCode:\\-1"
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "numeric",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": null,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "5xx"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": false,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "9ae66650-f3c1-410b-a093-6e55c678f543",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "haproxy_statusCode:[300 TO 399] AND NOT haproxy_statusCode:\\-1"
+                },
+                "streams": [],
+                "config": {
+                  "visualization": "numeric",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": null,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "3xx"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": false,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "06a0c9e0-f817-4645-9b71-0aab05a93161",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "haproxy_statusCode:[400 TO 499] AND NOT haproxy_statusCode:\\-1"
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "numeric",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": null,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "4xx"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": false,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "a6a96d37-355c-4b35-ab27-6bbd041cfdc4",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "haproxy_statusCode:[200 TO 299] AND NOT haproxy_statusCode:\\-1"
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "numeric",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": null,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "2xx"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": false,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "19f02796-3cc9-4842-9bb4-9cdb1abbc013",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "NOT haproxy_statusCode:\\-1"
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "table",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 100,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100,
+                        "skip_empty_values": true
+                      }
+                    },
+                    {
+                      "fields": [
+                        "haproxy_backend"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100
+                      }
+                    },
+                    {
+                      "fields": [
+                        "haproxy_serverName"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "Status  Code"
+                      },
+                      "function": "count(haproxy_statusCode)"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "pinned_columns": [
+                      "haproxy_statusCode"
+                    ]
+                  },
+                  "formatting_settings": null,
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "haproxy_statusCode",
+                      "direction": "Ascending"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "9235aa5c-bafc-484b-9431-f688b6b1cc18",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 604800,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "pie",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 100,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100,
+                        "skip_empty_values": true
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "Message Count"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": null,
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              }
+            ],
+            "widget_mapping": {
+              "9ae66650-f3c1-410b-a093-6e55c678f543": [
+                "31a9190b-b1cd-401f-98f2-dea36a159276"
+              ],
+              "06a0c9e0-f817-4645-9b71-0aab05a93161": [
+                "db0791d9-966d-4175-af53-d9cc2547b038"
+              ],
+              "fc2c23a7-1c63-435c-939d-70feb7c32e2c": [
+                "c8bfac4e-eade-434c-930c-84fb35ced580"
+              ],
+              "a6a96d37-355c-4b35-ab27-6bbd041cfdc4": [
+                "ab8216df-7a2a-4ec9-a103-60fd250657c2"
+              ],
+              "19f02796-3cc9-4842-9bb4-9cdb1abbc013": [
+                "999e0d81-7d45-4946-9b7e-f2e0832791cb"
+              ],
+              "9235aa5c-bafc-484b-9431-f688b6b1cc18": [
+                "425a28fc-160e-4752-adfe-0245a5ebb0fe"
+              ]
+            },
+            "positions": {
+              "19f02796-3cc9-4842-9bb4-9cdb1abbc013": {
+                "col": 1,
+                "row": 5,
+                "height": 4,
+                "width": "Infinity"
+              },
+              "9ae66650-f3c1-410b-a093-6e55c678f543": {
+                "col": 4,
+                "row": 1,
+                "height": 2,
+                "width": 3
+              },
+              "a6a96d37-355c-4b35-ab27-6bbd041cfdc4": {
+                "col": 1,
+                "row": 1,
+                "height": 2,
+                "width": 3
+              },
+              "06a0c9e0-f817-4645-9b71-0aab05a93161": {
+                "col": 1,
+                "row": 3,
+                "height": 2,
+                "width": 3
+              },
+              "fc2c23a7-1c63-435c-939d-70feb7c32e2c": {
+                "col": 4,
+                "row": 3,
+                "height": 2,
+                "width": 3
+              },
+              "9235aa5c-bafc-484b-9431-f688b6b1cc18": {
+                "col": 7,
+                "row": 1,
+                "height": 4,
+                "width": 6
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          },
+          "fc2fa50c-be21-4c6f-8dc2-637f30e5954e": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "tab": {
+                "title": "DDOS"
+              },
+              "widget": {
+                "2f14ef3f-0bde-4e30-8905-7c3cfdc8b19f": "Backend Heatness",
+                "ac193374-1219-4564-9e24-4a8501b3699b": "Backend Info (copy)"
+              }
+            },
+            "widgets": [
+              {
+                "id": "2f14ef3f-0bde-4e30-8905-7c3cfdc8b19f",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 60,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [],
+                "config": {
+                  "visualization": "heatmap",
+                  "column_limit": 100,
+                  "event_annotation": false,
+                  "row_limit": 100,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100,
+                        "skip_empty_values": true
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "Req/Backend"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_statusCode"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 100
+                      }
+                    }
+                  ],
+                  "visualization_config": {
+                    "color_scale": "Viridis",
+                    "reverse_scale": false,
+                    "auto_scale": true,
+                    "z_min": null,
+                    "z_max": null,
+                    "default_value": null,
+                    "use_smallest_as_default": false
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "ac193374-1219-4564-9e24-4a8501b3699b",
+                "type": "aggregation",
+                "filter": null,
+                "filters": [],
+                "timerange": {
+                  "from": 60,
+                  "type": "relative"
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": [
+                  "1d89c563-b46c-4c9f-ba1e-d61e587f4852"
+                ],
+                "config": {
+                  "visualization": "table",
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 5,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "haproxy_serverName",
+                        "haproxy_backend"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 5,
+                        "skip_empty_values": true
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "Req/Backend"
+                      },
+                      "function": "count(haproxy_backend)"
+                    }
+                  ],
+                  "rollup": false,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "pinned_columns": []
+                  },
+                  "formatting_settings": null,
+                  "sort": [
+                    {
+                      "type": "series",
+                      "field": "count(haproxy_backend)",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              }
+            ],
+            "widget_mapping": {
+              "2f14ef3f-0bde-4e30-8905-7c3cfdc8b19f": [
+                "03aa9f87-af37-4483-91d5-000678d8e91d"
+              ],
+              "ac193374-1219-4564-9e24-4a8501b3699b": [
+                "f9b2287e-9d43-4cf0-8d5e-b0650fbdf6d6"
+              ]
+            },
+            "positions": {
+              "2f14ef3f-0bde-4e30-8905-7c3cfdc8b19f": {
+                "col": 1,
+                "row": 3,
+                "height": 4,
+                "width": "Infinity"
+              },
+              "ac193374-1219-4564-9e24-4a8501b3699b": {
+                "col": 1,
+                "row": 1,
+                "height": 2,
+                "width": "Infinity"
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          }
+        },
+        "properties": [],
+        "owner": "admin",
+        "title": {
+          "@type": "string",
+          "@value": "HAProxy"
+        },
+        "type": "DASHBOARD",
+        "description": {
+          "@type": "string",
+          "@value": ""
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.2.7+5e29a2c"
+        }
+      ]
+    }
+  ]
+}
