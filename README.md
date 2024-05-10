@@ -33,3 +33,12 @@ To facilitate the integration of HAProxy logs with Graylog, you need to adjust t
 6. **Verify the log format in Graylog**: After HAProxy has been reloaded or restarted, check your Graylog dashboard to ensure that the logs are being received and parsed correctly according to the new format.
 
 By following these steps, you should be able to successfully configure HAProxy to send logs in a format that Graylog can understand and process. This will enhance your ability to monitor and analyze traffic through your HAProxy setup.
+
+
+# Screenshots
+
+![1.png](./assests/1.png)
+![2.png](./assests/2.png)
+![3.png](./assests/3.png)
+![4.png](./assests/4.png)
+
